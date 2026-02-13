@@ -1,0 +1,34 @@
+
+from fastapi import FastAPI
+from fastapi.templating import Jinja2Templates
+from db import get_db,DATABASE_URL
+from sqlalchemy import create_engine
+import os
+from models import Base
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+#to create database
+
+engine=create_engine(DATABASE_URL)
+Base.metadata.create_all(engine)
+
+@app.get("/")
+def read_root(request: Request):
+    return templates.TemplateResponse("chat.html", {"request": request})
+
+
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
