@@ -1,6 +1,5 @@
 
 from fastapi import FastAPI
-from fastapi.templating import Jinja2Templates
 from db import get_db,DATABASE_URL
 from sqlalchemy import create_engine
 import os
@@ -23,8 +22,8 @@ engine=create_engine(DATABASE_URL)
 Base.metadata.create_all(engine)
 
 @app.get("/")
-def read_root(request: Request):
-    return templates.TemplateResponse("chat.html", {"request": request})
+def read_root():
+    return {"hello":"world"}
 
 
 
